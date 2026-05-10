@@ -14,39 +14,38 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      /* Ensures the page height works properly on iOS Safari */
       height: -webkit-fill-available; 
       overflow: hidden;
       transition: background 0.5s ease;
     }
 
     html {
-      /* Dynamic viewport height helper for mobile */
       height: -webkit-fill-available;
     }
 
     .card {
       background: white;
-      padding: 30px 25px; /* Slightly snugger padding for mobile screens */
+      padding: 30px 25px;
       border-radius: 20px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.15);
       text-align: center;
-      width: 85%; /* Uses percentage width so it scales nicely on all screens */
+      width: 85%;
       max-width: 400px;
       animation: fadeIn 1.2s ease forwards;
+      /* Kept at 10 so it sits above the background, but below the floating emojis */
       z-index: 10;
       box-sizing: border-box;
     }
 
     h1 {
-      font-size: 2rem; /* Scaled down slightly so titles don't wrap awkwardly on mobile */
+      font-size: 2rem;
       color: #e91e63;
       margin-top: 0;
       margin-bottom: 15px;
     }
 
     p {
-      font-size: 1.05rem; /* Highly readable body size for mobile */
+      font-size: 1.05rem;
       margin-top: 12px;
       color: #555;
       line-height: 1.5;
@@ -57,8 +56,10 @@
       bottom: -100px;
       font-size: 2rem;
       animation: float 6s infinite ease-in-out;
-      z-index: 1;
+      /* Set higher than the card (10) so they float in front of it */
+      z-index: 20;
       user-select: none;
+      pointer-events: none; /* Prevents the floating emojis from blocking taps on the card */
     }
 
     @keyframes float {
@@ -79,16 +80,15 @@
   </div>
 
 <script>
-  // Pools of options to keep it fresh every load
   const gradients = [
-    ['#ffdde1', '#ee9ca7'], // Classic Pink
-    ['#ff9a9e', '#fecfef'], // Sweet Peach/Pink
-    ['#a1c4fd', '#c2e9fb'], // Soft Blue/Lavender
-    ['#f6d365', '#fda085'], // Warm Sunset Gold
-    ['#ffecd2', '#fcb69f'], // Soft Apricot
-    ['#d4fc79', '#96e6a1'], // Fresh Spring Green
-    ['#e0c3fc', '#8ec5fc'], // Dreamy Purple/Blue
-    ['#f093fb', '#f5576c']  // Vibrant Rose
+    ['#ffdde1', '#ee9ca7'], 
+    ['#ff9a9e', '#fecfef'], 
+    ['#a1c4fd', '#c2e9fb'], 
+    ['#f6d365', '#fda085'], 
+    ['#ffecd2', '#fcb69f'], 
+    ['#d4fc79', '#96e6a1'], 
+    ['#e0c3fc', '#8ec5fc'], 
+    ['#f093fb', '#f5576c']  
   ];
 
   const emojiPool = ['💐','🌸','🌷','❤️','💖','😘','🤗','🌹','🥰','💕','💞','🌼','🌻','🌺','🧸','🧁','✨','💝'];
@@ -130,17 +130,16 @@
     "All my love, hugs, and endless appreciation – Arjun",
     "Sending you the biggest hug and all my love today – Arjun",
     "With endless love and gratitude, today and always – Arjun",
-    "Your handsome son, sending you infinite love and warm hugs – Arjun"
+    "Your favorite son, sending you infinite love and warm hugs – Arjun"
   ];
 
-  // Helper function to pick random items
   const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   // 1. Set Random Background
   const chosenGradient = getRandom(gradients);
   document.body.style.background = `linear-gradient(135deg, ${chosenGradient[0]}, ${chosenGradient[1]})`;
 
-  // 2. Select a subset of 4 random emojis for this load's "theme"
+  // 2. Select a subset of 4 random emojis
   const shuffledEmojis = [...emojiPool].sort(() => 0.5 - Math.random());
   const activeEmojis = shuffledEmojis.slice(0, 4); 
 
@@ -154,7 +153,7 @@
     <p><strong>${getRandom(signoffs)} ${activeEmojis[2]}</strong></p>
   `;
 
-  // 4. Balloon / Emoji floating effect using the active theme emojis
+  // 4. Floating effect (now in front of the card)
   setInterval(() => {
     const b = document.createElement('div');
     b.className = 'balloon';
