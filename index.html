@@ -6,6 +6,7 @@
   <style>
     body {
       margin: 0;
+      /* Fallback background; will be overwritten by JavaScript */
       background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       font-family: 'Segoe UI', sans-serif;
       display: flex;
@@ -14,6 +15,7 @@
       justify-content: center;
       height: 100vh;
       overflow: hidden;
+      transition: background 0.5s ease;
     }
 
     .card {
@@ -24,17 +26,20 @@
       text-align: center;
       max-width: 460px;
       animation: fadeIn 1.2s ease forwards;
+      z-index: 10;
     }
 
     h1 {
       font-size: 2.5rem;
       color: #e91e63;
+      margin-bottom: 20px;
     }
 
     p {
       font-size: 1.2rem;
-      margin-top: 10px;
+      margin-top: 15px;
       color: #555;
+      line-height: 1.6;
     }
 
     .balloon {
@@ -42,11 +47,14 @@
       bottom: -100px;
       font-size: 2rem;
       animation: float 6s infinite ease-in-out;
+      z-index: 1;
+      user-select: none;
     }
 
     @keyframes float {
-      0% { transform: translateY(0) }
-      100% { transform: translateY(-120vh) }
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateX(20px) rotate(10deg); }
+      100% { transform: translateY(-120vh) rotate(-10deg); }
     }
 
     @keyframes fadeIn {
@@ -57,25 +65,95 @@
 </head>
 <body>
 
-<div class="card">
-  <h1>💐 Happy Mother’s Day, Mumma Ji 💖</h1>
-  <p>Thank you for your endless love, warm hugs, and gentle wisdom.</p>
-  <p>You are the heart of our home and the soul of our family.</p>
-  <p>Wishing you a day as beautiful and loving as you are.</p>
-  <p>With all my hugs, kisses, and gratitude – forever Arjun 💗</p>
-</div>
+<div class="card" id="card">
+  </div>
 
 <script>
-  const emojis = ['💐','🌸','🌷','❤️','💖','😘','🤗','🌹','🥰','💕','💞','🌼'];
+  // Pools of options to keep it fresh every load
+  
+  const gradients = [
+    ['#ffdde1', '#ee9ca7'], // Classic Pink
+    ['#ff9a9e', '#fecfef'], // Sweet Peach/Pink
+    ['#a1c4fd', '#c2e9fb'], // Soft Blue/Lavender
+    ['#f6d365', '#fda085'], // Warm Sunset Gold
+    ['#ffecd2', '#fcb69f'], // Soft Apricot
+    ['#d4fc79', '#96e6a1'], // Fresh Spring Green
+    ['#e0c3fc', '#8ec5fc'], // Dreamy Purple/Blue
+    ['#f093fb', '#f5576c']  // Vibrant Rose
+  ];
+
+  const emojiPool = ['💐','🌸','🌷','❤️','💖','😘','🤗','🌹','🥰','💕','💞','🌼','🌻','🌺','🧸','🧁','✨','💝'];
+
+  const headings = [
+    "Happy Mother’s Day, Mumma Ji!",
+    "To the Best Mumma Ji in the World! 💕",
+    "Wishing You a Beautiful Mother's Day, Mumma Ji!",
+    "You Are Simply Amazing, Mumma Ji! 🌸",
+    "Sending So Much Love, Mumma Ji!"
+  ];
+
+  const bodyParagraphs1 = [
+    "Thank you for your endless love, warm hugs, and gentle wisdom.",
+    "Your constant warmth, endless patience, and pure love guide me every single day.",
+    "No matter where life takes me, your loving smile is my ultimate comfort zone.",
+    "Thank you for always believing in me and showering me with unconditional love.",
+    "Your kindness is a beautiful light that brightens up our entire world."
+  ];
+
+  const bodyParagraphs2 = [
+    "You are the heart of our home and the soul of our family.",
+    "You have a heart of pure gold and make every single day brighter just by being you.",
+    "The world is infinitely more beautiful because of your gentle, loving presence.",
+    "You deserve all the happiness, laughter, and pampering in the world today and always.",
+    "You manage to make our house a home filled with endless warmth and joy."
+  ];
+
+  const bodyParagraphs3 = [
+    "Wishing you a day as beautiful and loving as you are.",
+    "I hope your special day is filled with as much happiness as you bring to everyone else.",
+    "May your day be packed with your absolute favorite things and endless smiles.",
+    "Wishing you a wonderfully peaceful, happy, and love-filled day today.",
+    "Hoping this day brings you a fraction of the immense joy you give to me."
+  ];
+
+  const signoffs = [
+    "With all my hugs, kisses, and gratitude – forever Arjun",
+    "All my love, hugs, and endless appreciation – Arjun",
+    "Sending you the biggest hug and all my love today – Arjun",
+    "With endless love and gratitude, today and always – Arjun",
+    "Your favorite son, sending you infinite love and warm hugs – Arjun"
+  ];
+
+  // Helper function to pick random items
+  const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  // 1. Set Random Background
+  const chosenGradient = getRandom(gradients);
+  document.body.style.background = `linear-gradient(135deg, ${chosenGradient[0]}, ${chosenGradient[1]})`;
+
+  // 2. Select a subset of 4 random emojis for this load's "theme"
+  const shuffledEmojis = [...emojiPool].sort(() => 0.5 - Math.random());
+  const activeEmojis = shuffledEmojis.slice(0, 4); 
+
+  // 3. Set Random Wording
+  const card = document.getElementById('card');
+  card.innerHTML = `
+    <h1>${activeEmojis[0]} ${getRandom(headings)} ${activeEmojis[1]}</h1>
+    <p>${getRandom(bodyParagraphs1)}</p>
+    <p>${getRandom(bodyParagraphs2)}</p>
+    <p>${getRandom(bodyParagraphs3)}</p>
+    <p><strong>${getRandom(signoffs)} ${activeEmojis[2]}</strong></p>
+  `;
+
+  // 4. Balloon / Emoji floating effect using the active theme emojis
   setInterval(() => {
     const b = document.createElement('div');
     b.className = 'balloon';
     b.style.left = `${Math.random() * 100}%`;
-    b.style.color = `hsl(${Math.random() * 360}, 70%, 65%)`;
-    b.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    b.textContent = getRandom(activeEmojis);
     document.body.appendChild(b);
     setTimeout(() => b.remove(), 7000);
-  }, 500);
+  }, 600);
 </script>
 
 </body>
