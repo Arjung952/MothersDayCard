@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Happy Mother's Day Mumma Ji!</title>
   <style>
     body {
       margin: 0;
-      /* Fallback background; will be overwritten by JavaScript */
       background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       font-family: 'Segoe UI', sans-serif;
       display: flex;
@@ -14,32 +14,42 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      /* Ensures the page height works properly on iOS Safari */
+      height: -webkit-fill-available; 
       overflow: hidden;
       transition: background 0.5s ease;
     }
 
+    html {
+      /* Dynamic viewport height helper for mobile */
+      height: -webkit-fill-available;
+    }
+
     .card {
       background: white;
-      padding: 40px;
+      padding: 30px 25px; /* Slightly snugger padding for mobile screens */
       border-radius: 20px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.15);
       text-align: center;
-      max-width: 460px;
+      width: 85%; /* Uses percentage width so it scales nicely on all screens */
+      max-width: 400px;
       animation: fadeIn 1.2s ease forwards;
       z-index: 10;
+      box-sizing: border-box;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2rem; /* Scaled down slightly so titles don't wrap awkwardly on mobile */
       color: #e91e63;
-      margin-bottom: 20px;
+      margin-top: 0;
+      margin-bottom: 15px;
     }
 
     p {
-      font-size: 1.2rem;
-      margin-top: 15px;
+      font-size: 1.05rem; /* Highly readable body size for mobile */
+      margin-top: 12px;
       color: #555;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     .balloon {
@@ -70,7 +80,6 @@
 
 <script>
   // Pools of options to keep it fresh every load
-  
   const gradients = [
     ['#ffdde1', '#ee9ca7'], // Classic Pink
     ['#ff9a9e', '#fecfef'], // Sweet Peach/Pink
